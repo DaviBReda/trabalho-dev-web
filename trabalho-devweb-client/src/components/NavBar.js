@@ -1,19 +1,46 @@
-import { getUser } from "../helpers/Utils";
-import Icon from '../components/Icon';
+import './componentStyles/NavBar.css'
+import { getUser, logout } from "../helpers/Utils";
+import IconW from './IconWhite'
+import { Link, useNavigate } from "react-router-dom";
+import {useState} from "react";
+import ReorderIcon from '@mui/icons-material/Reorder';
 
-export default function NavBar(){
-    
-    let userName = getUser
+export default function NavBar({onLogin}){
+
+    const navigate = useNavigate();
+
+    const toggleNavbar = () => {
+        setOpenLinks(!openLinks)
+    }
+
+    const handleLogout = () =>{
+        logout();
+        onLogin(false);
+        navigate('/');
+    }
+
+    const [openLinks, setOpenLinks] = useState(false);
+
+    let userName = getUser()
     if (userName !== null) {
         return(
             <div className="navbar">
-                <div className="leftSide">
-                    <Icon/>
+                <div className="leftSide" id={openLinks ? "open" : "close"}>
+                    <IconW/>
+                    <div className='hiddenLinks'>
+                    <Link to="/home"> Home </Link>
+                    <Link to="/dashboard"> Dashboard </Link>
+                    <Link to="/home"> Home </Link>
+                    <Link to="/dashboard"> Dashboard </Link>
+                    <p>Olá, {userName}</p>
+                    <Link onClick={handleLogout}>Logout</Link>
+                    </div>
                 </div>
                 <div className="rightSide">
-                    <link to="/home"> Home </link>
-                    <link to="/dashboard"> Dashboard </link>
+                    <Link to="/home"> Home </Link>
+                    <Link to="/dashboard"> Dashboard </Link>
                     <p>Olá, {userName}</p>
+                    <Link onClick={handleLogout}>Logout</Link>
                     <button onClick={toggleNavbar}>
                         toggleNavbar
                     </button>
@@ -23,14 +50,16 @@ export default function NavBar(){
     } else {
         return(
             <div className="navbar">
-                <div className="leftSide">
-                    <Icon/>
+                <div className="leftSide" id={openLinks ? "open" : "close"}>
+                    <IconW/>
+                    <Link to="/home"> Home </Link>
+                    <Link to="/dashboard"> Dashboard </Link>
                 </div>
                 <div className="rightSide">
-                    <link to="/register"> Registrar </link>
-                    <link to="/login"> Login </link>
+                    <Link to="/register"> Registrar </Link>
+                    <Link to="/login"> Login </Link>
                     <button onClick={toggleNavbar}>
-                        toggleNavbar
+                        <ReorderIcon/>
                     </button>
                 </div>
             </div>

@@ -2,7 +2,7 @@ import '../styles/register.css';
 import { useState } from 'react';
 import axios from 'axios';
 import Containers from '../components/componentImages/VariosContainer.png';
-import Icon from '../components/Icon';
+import Icon from '../components/IconBlack';
 
 export default function Register() {
 

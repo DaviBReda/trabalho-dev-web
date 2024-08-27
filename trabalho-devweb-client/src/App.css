@@ -1,5 +1,6 @@
 .App {
   text-align: center;
+  top: 0;
 }
 
 .App-logo {
@@ -35,4 +36,8 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+.NavBar {
+  top: 0;
 }

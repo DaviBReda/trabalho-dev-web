@@ -2,10 +2,10 @@ import '../styles/login.css';
 import { useState } from 'react';
 import axios from 'axios';
 import { login } from '../helpers/Utils';
-import Icon from '../components/Icon';
+import Icon from '../components/IconBlack';
 import BigShip from '../components/componentImages/BigShip.jpeg'
 
-export default function Login() {
+export default function Login({onLogin}) {
 
     const [userName, setUserName] = useState("")
     const [userPassword, setuserPassword] = useState("")
@@ -32,8 +32,8 @@ export default function Login() {
 
             }).then((response) => {
                 if(response.data["sucesso"] === 1) {
-                    login(userName, userPassword)
-                    window.alert("Usuário autenticado com sucesso")
+                    login(userName, userPassword);
+                    onLogin(true);
                 }else{
                     window.alert("Erro ao autenticar usuário: \n" + response.data["error"])
                 }
@@ -48,7 +48,8 @@ export default function Login() {
                 <img src={BigShip} alt='Navio Grandão' style={{ maxWidth: '33%', height: '100vh' }}/>
             <div className="login">
                 <div className="page_title">
-                    <Icon/> MyPort Manager
+                    <Icon/> 
+                    <h2>MyPort Manager</h2>
                 </div>
                 <form onSubmit={handleSubmit}>
                     <input
