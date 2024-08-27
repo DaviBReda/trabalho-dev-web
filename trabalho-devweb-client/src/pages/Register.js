@@ -1,10 +1,14 @@
 import '../styles/register.css';
 import { useState } from 'react';
 import axios from 'axios';
+import Containers from '../components/componentImages/VariosContainer.png';
+import Icon from '../components/Icon';
 
 export default function Register() {
 
     const [userName, setUserName] = useState("")
+    const [userEmail, setuserEmail] = useState("")
+    const [userPort, setuserPort] = useState("")
     const [userPassword, setuserPassword] = useState("")
     const [userPassword2, setuserPassword2] = useState("")
 
@@ -12,14 +16,14 @@ export default function Register() {
         e.preventDefault();
 
         if(userName === ""){
-            window.alert("É preciso digitar um nome de usuário")
+            window.alert("É preciso digitar um nome")
         }
 
         if(userPassword === ""){
             window.alert("É preciso digitar uma senha")
         }
 
-        if(userPassword != userPassword2){
+        if(userPassword !== userPassword2){
             window.alert("Campos de senha diferentes")
         }
 
@@ -46,36 +50,53 @@ export default function Register() {
 
     return (
         <div className="page">
-            <form onSubmit={handleSubmit}>
-                <input
-                    type="text"
-                    className="input"
-                    name="userName"
-                    value={userName}
-                    placeholder="Nome de Usuário"
-                    onChange={(e) => setUserName(e.target.value)}
-                />
-                <input
-                    type="password"
-                    className="input"
-                    name="userPassword"
-                    value={userPassword}
-                    placeholder="Senha"
-                    onChange={(e) => setuserPassword(e.target.value)}
-                />
-                <input
-                    type="password"
-                    className="input"
-                    name="userPassword2"
-                    value={userPassword2}
-                    placeholder="Senha Novamente"
-                    onChange={(e) => setuserPassword2(e.target.value)}
-                />
-                <button
-                    type="submit"
-                    className="button"
-                >Cadastrar</button>
-            </form>
+            <p className='header-text'><Icon/>MyPort Manager</p>
+                <div className="login">
+                    <div className="page_title">
+                        Cadastrar Usuário
+                    </div>
+                    <form onSubmit={handleSubmit}>
+                        <input
+                            type="text"
+                            name="userName"
+                            value={userName}
+                            placeholder="Nome"
+                            onChange={(e) => setUserName(e.target.value)}
+                        />
+                        <input
+                            type="text"
+                            name="userEmail"
+                            value={userEmail}
+                            placeholder="Email"
+                            onChange={(e) => setuserEmail(e.target.value)}
+                        />
+                        <input
+                            type="text"
+                            name="userPort"
+                            value={userPort}
+                            placeholder="Nome do Porto"
+                            onChange={(e) => setuserPort(e.target.value)}
+                        />
+                        <input
+                            type="password"
+                            name="userPassword"
+                            value={userPassword}
+                            placeholder="Senha"
+                            onChange={(e) => setuserPassword(e.target.value)}
+                        />
+                        <input
+                            type="password"
+                            name="userPassword2"
+                            value={userPassword2}
+                            placeholder="Senha Novamente"
+                            onChange={(e) => setuserPassword2(e.target.value)}
+                        />
+                        <button
+                            type="submit"
+                        >Cadastrar</button>
+                    </form>
+                </div>
+            <img src={Containers} alt='Varios Container' style={{ maxWidth: '33%', height: '100vh' }}/>
         </div>
     );
 }

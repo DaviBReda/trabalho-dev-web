@@ -3,8 +3,8 @@ const bcrypt = require('node-php-password')
 
 exports.registerUser = async (req, res) => {
     console.log('Requisição recebida:', req.body);
-    if (req.body.hasOwnProperty('novo_login') && req.body.hasOwnProperty('nova_senha')) {
-        const { novo_login, nova_senha } = req.body;
+    if (req.body.hasOwnProperty('novo_login') && req.body.hasOwnProperty('nova_senha') && req.body.hasOwnProperty('novo_nome') && req.body.hasOwnProperty('novo_porto')) {
+        const { novo_login, nova_senha, novo_nome, novo_porto } = req.body;
 
         var token = bcrypt.hash(nova_senha);
 
@@ -16,8 +16,8 @@ exports.registerUser = async (req, res) => {
         if (hasUserQuery.rows.length === 0) {
             try {
                 const insertUserQuery = await db.query(
-                    "INSERT INTO usuarios (login, token) VALUES ($1, $2)",
-                    [novo_login, token]
+                    "INSERT INTO usuarios (login, token, nome, port) VALUES ($1, $2, $3, $4)",
+                    [novo_login, token, novo_nome, novo_porto]
                 );
 
                 res.status(200).send(
