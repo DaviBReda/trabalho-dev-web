@@ -98,3 +98,107 @@ exports.getProducts = async (req, res) => {
         res.status(200).send({ erro: "faltam parâmetros" });
     }
 }
+
+exports.getProductByType = async (req, res) => {
+    try{
+        const getProductByType = await db.query(
+            "SELECT PT.Description, COUNT(IdProduct) AS TotalProdutos FROM Product P JOIN ProductType PT ON PT.IdProductType = P.IdProductType GROUP BY PT.Description;"
+        );
+        if (getProductByType.rows.length !== 0){
+            res.status(200).send(
+                {
+                    sucesso: 1,
+                    products: getProductByType.rows,
+                    qtde_products: getProductByType.rows.length
+                }
+            );
+        } else {
+            res.status(200).send(
+                {
+                    sucesso: 0,
+                    message: "Nenhum produto com esses parâmetros encontrado."
+                }
+            );
+        }
+    } catch (err) {
+        res.status(200).send({ erro: "erro BD: " + err });
+    }
+}
+
+exports.getWeightPerContainer = async (req, res) => {
+    try{
+        const getWeightPerContainer = await db.query(
+            "SELECT IdContainer, SUM(Weight) AS PesoTotal FROM Product WHERE  IdContainer IS NOT NULL GROUP BY IdContainer ORDER BY PesoTotal;"
+        );
+        if (getWeightPerContainer.rows.length !== 0){
+            res.status(200).send(
+                {
+                    sucesso: 1,
+                    products: getWeightPerContainer.rows,
+                    qtde_products: getWeightPerContainer.rows.length
+                }
+            );
+        } else {
+            res.status(200).send(
+                {
+                    sucesso: 0,
+                    message: "Nenhum produto com esses parâmetros encontrado."
+                }
+            );
+        }
+    } catch (err) {
+        res.status(200).send({ erro: "erro BD: " + err });
+    }
+}
+
+exports.getTotalProducts = async (req, res) => {
+    try{
+        const getTotalProducts = await db.query(
+            "SELECT COUNT(*) AS NumeroTotalProdutos FROM Product;"
+        );
+        if (getTotalProducts.rows.length !== 0){
+            res.status(200).send(
+                {
+                    sucesso: 1,
+                    products: getTotalProducts.rows,
+                    qtde_products: getTotalProducts.rows.length
+                }
+            );
+        } else {
+            res.status(200).send(
+                {
+                    sucesso: 0,
+                    message: "Nenhum produto com esses parâmetros encontrado."
+                }
+            );
+        }
+    } catch (err) {
+        res.status(200).send({ erro: "erro BD: " + err });
+    }
+}
+
+exports.getProductOutContainer = async (req, res) => {
+    try{
+        const getProductOutContainer = await db.query(
+            "SELECT ROUND((COUNT(CASE WHEN IdContainer IS NULL THEN 1 END) * 100.0 / COUNT(*)), 1) AS PercentualProdutosSemContainer FROM Product;"
+        );
+        if (getProductOutContainer.rows.length !== 0){
+            res.status(200).send(
+                {
+                    sucesso: 1,
+                    products: getProductOutContainer.rows,
+                    qtde_products: getProductOutContainer.rows.length
+                }
+            );
+        } else {
+            res.status(200).send(
+                {
+                    sucesso: 0,
+                    message: "Nenhum produto com esses parâmetros encontrado."
+                }
+            );
+        }
+    } catch (err) {
+        res.status(200).send({ erro: "erro BD: " + err });
+    }
+}

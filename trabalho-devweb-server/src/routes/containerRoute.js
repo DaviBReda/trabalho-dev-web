@@ -18,5 +18,9 @@ router.post('/registerContainer',challangeAuth, containerController.registerCont
 //busca
 router.get('/getContainerTypes',challangeAuth, containerController.getContainerTypes)
 router.get('/getContainers',challangeAuth, containerController.getContainers)
+router.get('/getContainerByLocation',challangeAuth, containerController.getContainerByLocation)
+router.get('/getContainerByContainerType',challangeAuth, containerController.getContainerByContainerType)
+router.get('/getContainerAlerts',challangeAuth, containerController.getContainerAlerts)
+router.get('/getCountContainers',challangeAuth, containerController.getCountContainers)
 
 module.exports = router;

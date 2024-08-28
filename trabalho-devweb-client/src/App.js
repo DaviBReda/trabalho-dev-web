@@ -1,31 +1,33 @@
 import './App.css';
 import {BrowserRouter as Router, Route, Routes } from "react-router-dom"
-import {useState} from 'react'
-import { getUser } from './helpers/Utils';
 import Login from './pages/Login';
-import Home from './pages/Home';
+import PortManagement from './pages/PortManagement';
 import LandingPage from './pages/LandingPage';
 import Register from './pages/Register';
-import NavBar from './components/NavBar';
+import ContainerDashBoard from './pages/ContainerDashBoard';
+import OperationDashBoard from './pages/OperationDashBoard';
+import ShipDashBoard from './pages/ShipDashBoard';
+import ProductDashBoard from './pages/ProductDashBoard';
+import ProcessAndDowntimeDashBoard from './pages/ProcessAndDowntimeDashBoard';
+import ContainerRegister from './pages/ContainerRegister';
 
 function App() {
-
-const [isLogged, setIsLogged] = useState(getUser() != null ? true : false)
-
-function handleLogin(isAuth) {
-  setIsLogged(isAuth);
-}
 
   return (
     <div className='App'>
       <Router>
-        <NavBar className='NavBar' onLogin={handleLogin}/>
         <Routes>
-          <Route path='/' element={isLogged ? <Home/> : <Login onLogin={handleLogin}/>} />
+          <Route path='/' element={<LandingPage/>} />
           <Route path='/landing' element={<LandingPage/>} />
-          <Route path='/home' element={<Home/>} />
-          <Route path='/login' element={<Login onLogin={handleLogin}/>} />
+          <Route path='/home' element={<PortManagement/>} />
+          <Route path='/login' element={<Login/>} />
           <Route path='/register' element={<Register/>} />
+          <Route path='/container-dash' element={<ContainerDashBoard/>} />
+          <Route path='/operation-dash' element={<OperationDashBoard/>} />
+          <Route path='/ship-dash' element={<ShipDashBoard/>} />
+          <Route path='/product-dash' element={<ProductDashBoard/>} />
+          <Route path='/process-dash' element={<ProcessAndDowntimeDashBoard/>} />
+          <Route path='/container-register' element={<ContainerRegister/>} />
         </Routes>
       </Router>
     </div>

@@ -99,3 +99,107 @@ exports.getShips = async (req, res) => {
         res.status(200).send({ erro: "faltam parametros" });
     }
 }
+
+exports.getShipByType = async (req, res) => {
+    try{
+        const getShipByType = await db.query(
+            "SELECT ST.ModelName, COUNT(IdShip) AS TotalNavios FROM Ship S JOIN ShipType ST on ST.IdShipType = S.IdShipType GROUP BY ST.ModelName;"
+        );
+        if (getShipByType.rows.length !== 0){
+            res.status(200).send(
+                {
+                    sucesso: 1,
+                    ships: getShipByType.rows,
+                    qtde_ships: getShipByType.rows.length
+                }
+            );
+        } else {
+            res.status(200).send(
+                {
+                    sucesso: 0,
+                    message: "Nenhum navio com esses parametros encontrado."
+                }
+            );
+        }
+    } catch (err) {
+        res.status(200).send({ erro: "erro BD: " + err });
+    }
+}
+
+exports.getShipMaintenance = async (req, res) => {
+    try{
+        const getShipMaintenance = await db.query(
+            "SELECT IdShip, LastMaintenance FROM Ship WHERE LastMaintenance > NOW() - INTERVAL '6 MONTHS';"
+        );
+        if (getShipMaintenance.rows.length !== 0){
+            res.status(200).send(
+                {
+                    sucesso: 1,
+                    ships: getShipMaintenance.rows,
+                    qtde_ships: getShipMaintenance.rows.length
+                }
+            );
+        } else {
+            res.status(200).send(
+                {
+                    sucesso: 0,
+                    message: "Nenhum navio com esses parametros encontrado."
+                }
+            );
+        }
+    } catch (err) {
+        res.status(200).send({ erro: "erro BD: " + err });
+    }
+}
+
+exports.getTotalShips = async (req, res) => {
+    try{
+        const getTotalShips = await db.query(
+            "SELECT COUNT(*) AS NumeroTotalNavios FROM Ship;"
+        );
+        if (getTotalShips.rows.length !== 0){
+            res.status(200).send(
+                {
+                    sucesso: 1,
+                    ships: getTotalShips.rows,
+                    qtde_ships: getTotalShips.rows.length
+                }
+            );
+        } else {
+            res.status(200).send(
+                {
+                    sucesso: 0,
+                    message: "Nenhum navio com esses parametros encontrado."
+                }
+            );
+        }
+    } catch (err) {
+        res.status(200).send({ erro: "erro BD: " + err });
+    }
+}
+
+exports.getUsedPercent = async (req, res) => {
+    try{
+        const getUsedPercent = await db.query(
+            "SELECT (COUNT(CASE WHEN ContainerCount > 0 THEN 1 END) / COUNT(*))*100 AS PercentualNaviosComContainers FROM Ship;"
+        );
+        if (getUsedPercent.rows.length !== 0){
+            res.status(200).send(
+                {
+                    sucesso: 1,
+                    ships: getUsedPercent.rows,
+                    qtde_ships: getUsedPercent.rows.length
+                }
+            );
+        } else {
+            res.status(200).send(
+                {
+                    sucesso: 0,
+                    message: "Nenhum navio com esses parametros encontrado."
+                }
+            );
+        }
+    } catch (err) {
+        res.status(200).send({ erro: "erro BD: " + err });
+    }
+}

@@ -183,3 +183,203 @@ exports.getProcesses = async (req, res) => {
         res.status(200).send({ erro: "erro BD: " + err });
     }
 }
+
+exports.getOperationsbyShip = async (req, res) => {
+    try {
+        const getOperationsbyShip = await db.query(
+            "SELECT ST.ModelName, COUNT(IdOperation) AS TotalOperacoes FROM Operation O JOIN Ship S on S.IdShip = O.IdShip Join ShipType ST on ST.IdShipType = S.IdShipType GROUP BY ST.ModelName;"
+        );
+        if (getOperationsbyShip.rows.length !== 0){
+            res.status(200).send(
+                {
+                    sucesso: 1,
+                    operations: getOperationsbyShip.rows
+                }
+            );
+        } else {
+            res.status(200).send(
+                {
+                    sucesso: 0,
+                    message: "Nenhuma operação encontrada."
+                }
+            );
+        }
+    } catch (err) {
+        res.status(200).send({ erro: "erro BD: " + err });
+    }
+}
+
+exports.getOperationsDelays = async (req, res) => {
+    try {
+        const getOperationsDelays = await db.query(
+            "SELECT IdOperation, (RealEndDate - ProgrammedEndDate) AS DuracaoAtraso FROM Operation WHERE RealEndDate > ProgrammedEndDate;"
+        );
+        if (getOperationsDelays.rows.length !== 0){
+            res.status(200).send(
+                {
+                    sucesso: 1,
+                    operations: getOperationsDelays.rows
+                }
+            );
+        } else {
+            res.status(200).send(
+                {
+                    sucesso: 0,
+                    message: "Nenhuma operação encontrada."
+                }
+            );
+        }
+    } catch (err) {
+        res.status(200).send({ erro: "erro BD: " + err });
+    }
+}
+
+exports.getTotalOperations = async (req, res) => {
+    try {
+        const getTotalOperations = await db.query(
+            "SELECT COUNT(*) AS NumeroTotalOperacoes FROM Operation;"
+        );
+        if (getTotalOperations.rows.length !== 0){
+            res.status(200).send(
+                {
+                    sucesso: 1,
+                    operations: getTotalOperations.rows
+                }
+            );
+        } else {
+            res.status(200).send(
+                {
+                    sucesso: 0,
+                    message: "Nenhuma operação encontrada."
+                }
+            );
+        }
+    } catch (err) {
+        res.status(200).send({ erro: "erro BD: " + err });
+    }
+}
+
+exports.getTotalDelays = async (req, res) => {
+    try {
+        const getTotalOperations = await db.query(
+            "SELECT COUNT(*) as DelayedOP FROM Operation WHERE RealEndDate > ProgrammedEndDate"
+        );
+        if (getTotalOperations.rows.length !== 0){
+            res.status(200).send(
+                {
+                    sucesso: 1,
+                    operations: getTotalOperations.rows
+                }
+            );
+        } else {
+            res.status(200).send(
+                {
+                    sucesso: 0,
+                    message: "Nenhuma operação encontrada."
+                }
+            );
+        }
+    } catch (err) {
+        res.status(200).send({ erro: "erro BD: " + err });
+    }
+}
+
+exports.getProcessbyMachine = async (req, res) => {
+    try {
+        const getProcessbyMachine = await db.query(
+            "SELECT MT.Description, COUNT(IdProcess) AS TotalProcessos FROM Process P JOIN Machine M ON M.IdMachine = P.IdMachine JOIN MachineType MT ON MT.IdMachineType = M.IdMachineType GROUP BY MT.Description;"
+        );
+        if (getProcessbyMachine.rows.length !== 0){
+            res.status(200).send(
+                {
+                    sucesso: 1,
+                    operations: getProcessbyMachine.rows
+                }
+            );
+        } else {
+            res.status(200).send(
+                {
+                    sucesso: 0,
+                    message: "Nenhuma operação encontrada."
+                }
+            );
+        }
+    } catch (err) {
+        res.status(200).send({ erro: "erro BD: " + err });
+    }
+}
+
+exports.getDowntimebyMachine = async (req, res) => {
+    try {
+        const getDowntimebyMachine = await db.query(
+            "SELECT MT.Description AS desc, COUNT(d.IdDowntime) AS TotalDowntimes FROM Downtime D JOIN process P ON P.IdOperation = D.IdOperation JOIN Machine M ON M.IdMachine = P.IdMachine JOIN MachineType MT ON MT.IdMachineType = M.IdMachineType GROUP BY MT.Description;"
+        );
+        if (getDowntimebyMachine.rows.length !== 0){
+            res.status(200).send(
+                {
+                    sucesso: 1,
+                    operations: getDowntimebyMachine.rows
+                }
+            );
+        } else {
+            res.status(200).send(
+                {
+                    sucesso: 0,
+                    message: "Nenhuma operação encontrada."
+                }
+            );
+        }
+    } catch (err) {
+        res.status(200).send({ erro: "erro BD: " + err });
+    }
+}
+
+exports.getTotalDowntimes = async (req, res) => {
+    try {
+        const getTotalDowntimes = await db.query(
+            "SELECT COUNT(*) AS NumeroTotalDowntimes FROM Downtime;"
+        );
+        if (getTotalDowntimes.rows.length !== 0){
+            res.status(200).send(
+                {
+                    sucesso: 1,
+                    operations: getTotalDowntimes.rows
+                }
+            );
+        } else {
+            res.status(200).send(
+                {
+                    sucesso: 0,
+                    message: "Nenhuma operação encontrada."
+                }
+            );
+        }
+    } catch (err) {
+        res.status(200).send({ erro: "erro BD: " + err });
+    }
+}
+
+exports.getTotalProcess = async (req, res) => {
+    try {
+        const getTotalProcess = await db.query(
+            "SELECT COUNT(*) AS NumeroTotalProcessos FROM Process;"
+        );
+        if (getTotalProcess.rows.length !== 0){
+            res.status(200).send(
+                {
+                    sucesso: 1,
+                    operations: getTotalProcess.rows
+                }
+            );
+        } else {
+            res.status(200).send(
+                {
+                    sucesso: 0,
+                    message: "Nenhuma operação encontrada."
+                }
+            );
+        }
+    } catch (err) {
+        res.status(200).send({ erro: "erro BD: " + err });
+    }
+}
